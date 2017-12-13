@@ -75,8 +75,7 @@ void Foam::fv::rotorDiskSource::calculate
             Uc.x() = 0.0;
 
             // Set blade normal component of velocity
-            const auto rotationSign = (omega_ > 0) ? 1.0 : -1.0;
-            Uc.y() = radius * omega_ - rotationSign * Uc.y();
+            Uc.y() = radius * omega_ - Uc.y();
 
             // Determine blade data for this radius
             // i2 = index of upper radius bound data point in blade list
@@ -90,15 +89,8 @@ void Foam::fv::rotorDiskSource::calculate
             scalar alphaGeom = thetag[i] + twist;
 
             // Effective angle of attack
+            const auto rotationSign = (omega_ > 0) ? 1.0 : -1.0;
             scalar alphaEff = alphaGeom - atan2(-Uc.z(), rotationSign * Uc.y());
-            if (alphaEff > mathematical::pi)
-            {
-                alphaEff -= mathematical::twoPi;
-            }
-            if (alphaEff < -mathematical::pi)
-            {
-                alphaEff += mathematical::twoPi;
-            }
 
             AOAmin = min(AOAmin, alphaEff);
             AOAmax = max(AOAmax, alphaEff);

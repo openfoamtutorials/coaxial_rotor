@@ -29,7 +29,7 @@ disk
     tipEffect       1.0;   // Normalised radius above which lift = 0
     // I modified the source to enable opposite rotation (as in a coax configuration)
     //  Simply flip sign on rpm to get opposite rotation.
-    rpm             9000;
+    rpm             -9000;
     rhoRef          1.18;
 
     inletFlowType   local;  // Inlet flow type specification
@@ -113,7 +113,7 @@ downstreamDisk
     tipEffect       1.0;   // Normalised radius above which lift = 0
     // I modified the source to enable opposite rotation (as in a coax configuration)
     //  Simply flip sign on rpm to get opposite rotation.
-    rpm             -9000;
+    rpm             9000;
     rhoRef          1.18;
 
     inletFlowType   local;  // Inlet flow type specification
@@ -121,7 +121,7 @@ downstreamDisk
     geometryMode    specified;
     origin          (0 0 0);
     axis            (0 1 0);
-    refDirection    (-1 0 0);  // Reference direction
+    refDirection    (1 0 0);  // Reference direction
                               // - used as reference for psi angle
     trimModel       fixedTrim;  // fixed || targetForce
 
