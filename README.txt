@@ -18,3 +18,5 @@ Mesh and run the simulation via:
 You can start over the simulation by deleting generated files via:
 ./clean.py
 
+When viewing results, when looking at Z direction (through the thin of the wedge) it is important to use the cell-based visualization, rather than point-based. Point-based for some reason does not color the directions properly.
+
