@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2016 OpenFOAM Foundation
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2019 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -22,12 +22,6 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 \*---------------------------------------------------------------------------*/
-
-// This version allows for counter-rotating rotors, by flipping rpm sign.
-// Also prints rotor shaft power.
-// Uc.x(): radial direction.
-// Uc.y(): drag direction.
-// Uc.z(): lift / thrust direction.
 
 #include "rotorDiskSource.H"
 #include "volFields.H"
@@ -53,13 +47,13 @@ void Foam::fv::rotorDiskSource::calculate
     // Logging info
     scalar dragEff = 0.0;
     scalar liftEff = 0.0;
-    scalar AOAmin = GREAT;
-    scalar AOAmax = -GREAT;
+    scalar AOAmin = great;
+    scalar AOAmax = -great;
     scalar powerEff = 0.0;
 
     forAll(cells_, i)
     {
-        if (area_[i] > ROOTVSMALL)
+        if (area_[i] > rootVSmall)
         {
             const label celli = cells_[i];
 
@@ -67,6 +61,9 @@ void Foam::fv::rotorDiskSource::calculate
 
             // Transform velocity into local cylindrical reference frame
             vector Uc = cylindrical_->invTransform(U[celli], i);
+            // Uc.x(): radial direction.
+            // Uc.y(): drag direction.
+            // Uc.z(): lift / thrust direction.
 
             // Transform velocity into local coning system
             Uc = R_[i] & Uc;
@@ -75,7 +72,7 @@ void Foam::fv::rotorDiskSource::calculate
             Uc.x() = 0.0;
 
             // Set blade normal component of velocity
-            Uc.y() = radius * omega_ - Uc.y();
+            Uc.y() = radius*omega_ - Uc.y();
 
             // Determine blade data for this radius
             // i2 = index of upper radius bound data point in blade list
